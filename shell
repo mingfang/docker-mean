@@ -1,0 +1,4 @@
+#!/bin/sh
+
+docker run -p 80:80 -P -v `pwd`:/docker-serf -rm=true -i -t mean /bin/bash
+
