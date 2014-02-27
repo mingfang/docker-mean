@@ -1,1 +1,1 @@
-docker build -t mean .
+docker build -rm=true -t mean .
