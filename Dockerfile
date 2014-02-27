@@ -57,10 +57,10 @@ RUN cd /mean && \
 
 #Configuration
 
-ADD . /docker-serf
-RUN ln -s /docker-serf/etc/supervisord-serf.conf /etc/supervisor/conf.d/supervisord-serf.conf
-RUN ln -s /docker-serf/etc/supervisord-ssh.conf /etc/supervisor/conf.d/supervisord-ssh.conf
-RUN ln -s /docker-serf/etc/supervisord-mongodb.conf /etc/supervisor/conf.d/supervisord-mongodb.conf
+ADD . /docker
+RUN ln -s /docker/etc/supervisord-serf.conf /etc/supervisor/conf.d/supervisord-serf.conf
+RUN ln -s /docker/etc/supervisord-ssh.conf /etc/supervisor/conf.d/supervisord-ssh.conf
+RUN ln -s /docker/etc/supervisord-mongodb.conf /etc/supervisor/conf.d/supervisord-mongodb.conf
 
  
 EXPOSE 22 7946 3000
