@@ -18,12 +18,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server &&	mkdir /v
 #Utilities
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo bzip2
 
-#Serf
-RUN wget https://dl.bintray.com/mitchellh/serf/0.4.1_linux_amd64.zip && \
-    unzip 0.4*.zip && \
-    rm 0.4*.zip
-RUN mv serf /usr/bin/
-
 #Node
 RUN wget http://nodejs.org/dist/v0.10.25/node-v0.10.25-linux-x64.tar.gz && \
     tar xvf node*gz && \
@@ -58,7 +52,6 @@ RUN cd /mean && \
 #Configuration
 
 ADD . /docker
-RUN ln -s /docker/etc/supervisord-serf.conf /etc/supervisor/conf.d/supervisord-serf.conf
 RUN ln -s /docker/etc/supervisord-ssh.conf /etc/supervisor/conf.d/supervisord-ssh.conf
 RUN ln -s /docker/etc/supervisord-mongodb.conf /etc/supervisor/conf.d/supervisord-mongodb.conf
 
