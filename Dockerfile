@@ -32,17 +32,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org
 RUN mkdir -p /data/db
 
 #MEAN
-RUN git clone https://github.com/linnovate/mean.git
-RUN cd mean && \
-    npm install
-
-RUN npm install -g grunt-cli
-RUN echo 'eval "$(grunt --completion=bash)"' >> ~/.bashrc
-RUN npm install -g bower
-
-RUN cd /mean && \
-    bower --allow-root install && \
-    npm install
+RUN npm install -g meanio
+RUN mean init dockermean && npm install
+RUN  bower --allow-root install 
+RUN grunt
 
 #Configuration
 ADD . /docker
