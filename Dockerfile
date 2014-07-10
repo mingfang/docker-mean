@@ -34,10 +34,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org
 RUN mkdir -p /data/db
 
 #MEAN
-RUN npm install -g meanio
-RUN mean init dockermean && npm install
-RUN  bower --allow-root install 
-RUN grunt
+#RUN npm install -g meanio
+#RUN mean init dockermean && npm install
+#RUN  bower --allow-root install 
+#RUN grunt
 
 #Configuration
 ADD . /docker
