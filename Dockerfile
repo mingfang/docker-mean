@@ -8,9 +8,13 @@ RUN echo 'deb http://archive.ubuntu.com/ubuntu precise main universe' > /etc/apt
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y runit 
 CMD /usr/sbin/runsvdir-start
 
-#SSHD
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server &&	mkdir -p /var/run/sshd && \
-    echo 'root:root' |chpasswd
+
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:mean!' |chpasswd
+
+EXPOSE 22
+CMD    ["/usr/sbin/sshd", "-D"]
 
 #Utilities
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo
@@ -21,8 +25,6 @@ RUN mv node* node && \
     ln -s /node/bin/node /usr/local/bin/node && \
     ln -s /node/bin/npm /usr/local/bin/npm
 
-#Express
-RUN npm install express -g
 
 #MongoDB
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
