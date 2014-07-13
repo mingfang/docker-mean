@@ -33,11 +33,16 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org
 RUN mkdir -p /data/db
 
-#MEAN
-#RUN npm install -g meanio
-#RUN mean init dockermean && npm install
-#RUN  bower --allow-root install 
-#RUN grunt
+# Create a mean user
+RUN mkdir -p /home/mean
+RUN useradd mean -d /home/mean -s /bin/bash 
+RUN cd /home/mean
+
+#Install mean cli
+RUN npm install -g meanio
+# Init the application and install dependencies
+RUN su mean -c "mean init dockermean && npm install"
+RUN su mean -c grunt
 
 #Configuration
 ADD . /docker
