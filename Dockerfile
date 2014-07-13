@@ -37,6 +37,7 @@ RUN mkdir -p /data/db
 RUN mkdir -p /home/mean
 RUN useradd mean -d /home/mean -s /bin/bash 
 RUN cd /home/mean
+RUN chown mean /home/mean
 
 #Install mean cli
 RUN npm install -g meanio
