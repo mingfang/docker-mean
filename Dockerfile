@@ -1,28 +1,21 @@
-FROM ubuntu
+FROM ubuntu:14.04
  
-RUN echo 'deb http://archive.ubuntu.com/ubuntu precise main universe' > /etc/apt/sources.list && \
-    echo 'deb http://archive.ubuntu.com/ubuntu precise-updates main universe' >> /etc/apt/sources.list && \
-    apt-get update
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update
 
 #Runit
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y runit 
+RUN apt-get install -y runit 
 CMD /usr/sbin/runsvdir-start
 
 #SSHD
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server &&	mkdir -p /var/run/sshd && \
+RUN apt-get install -y openssh-server && \
+    mkdir -p /var/run/sshd && \
     echo 'root:root' |chpasswd
+RUN sed -i "s/session.*required.*pam_loginuid.so/#session    required     pam_loginuid.so/" /etc/pam.d/sshd
+RUN sed -i "s/PermitRootLogin without-password/#PermitRootLogin without-password/" /etc/ssh/sshd_config
 
 #Utilities
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo
-
-#Node
-RUN curl http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-x64.tar.gz | tar xz
-RUN mv node* node && \
-    ln -s /node/bin/node /usr/local/bin/node && \
-    ln -s /node/bin/npm /usr/local/bin/npm
-
-#Express
-RUN npm install express -g
+RUN apt-get install -y vim less net-tools inetutils-ping curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common
 
 #MongoDB
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
@@ -30,6 +23,15 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
     apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mongodb-org
 RUN mkdir -p /data/db
+
+#Node
+RUN curl http://nodejs.org/dist/v0.10.29/node-v0.10.29-linux-x64.tar.gz | tar xz
+RUN mv node* node && \
+    ln -s /node/bin/node /usr/local/bin/node && \
+    ln -s /node/bin/npm /usr/local/bin/npm
+
+#Express
+RUN npm install express -g
 
 #MEAN
 RUN git clone https://github.com/linnovate/mean.git
@@ -44,12 +46,5 @@ RUN cd /mean && \
     bower --allow-root install && \
     npm install
 
-#Configuration
-ADD . /docker
-
-#Runit Automatically setup all services in the sv directory
-RUN for dir in /docker/sv/*; do echo $dir; chmod +x $dir/run $dir/log/run; ln -s $dir /etc/service/; done
-
-ENV HOME /root
-WORKDIR /root
-EXPOSE 22 7946 3000
+#Add runit services
+ADD sv /etc/service 
