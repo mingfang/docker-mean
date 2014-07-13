@@ -41,10 +41,8 @@ RUN chown mean /home/mean
 
 #Install mean cli
 RUN npm install -g meanio
-# Init the application and install dependencies
-RUN su mean -c "mean init dockermean" 
-RUN su mean -c "cd dockermean && npm install"
-RUN su mean -c grunt
+# Init the application,install dependencies and run grunt
+RUN su mean -c "mean init dockermean && cd dockermean && npm install && grunt"
 
 #Configuration
 ADD . /docker
