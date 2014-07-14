@@ -11,7 +11,7 @@ CMD /usr/sbin/runsvdir-start
 
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:mean!' |xargs chpasswd
+RUN echo 'root:mean!' | chpasswd
 
 EXPOSE 22
 CMD    ["/usr/sbin/sshd", "-D"]
@@ -43,7 +43,7 @@ RUN chown mean /home/mean
 RUN npm install -g meanio
 # Init the application,install dependencies and run grunt
 RUN su mean -c "cd /home/mean && pwd && id && mean init meanapp && cd /home/mean/meanapp && npm install"
-RUN su mean -c "pwd && id && cd /home/mean/meanapp && echo "in dir" && pwd && ls -l"
+RUN su mean -c "pwd && id && cd /home/mean/meanapp && pwd && ls -l"
 RUN npm install -g grunt-cli
 
 #Configuration
