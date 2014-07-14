@@ -45,7 +45,6 @@ RUN npm install -g meanio
 RUN su mean -c "cd /home/mean && pwd && id && mean init meanapp && cd /home/mean/meanapp && npm install"
 RUN su mean -c "pwd && id && cd /home/mean/meanapp && echo "in dir" && pwd && ls -l"
 RUN npm install -g grunt-cli
-RUN su mean -c "cd /home/mean/meanapp && grunt"
 
 #Configuration
 ADD . /docker
