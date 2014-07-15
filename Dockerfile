@@ -38,6 +38,7 @@ RUN mkdir -p /home/mean
 RUN useradd mean -d /home/mean -s /bin/bash 
 RUN cd /home/mean
 RUN chown mean /home/mean
+RUN echo "user creation completed"
 
 #Install mean cli
 RUN npm install -g meanio
